@@ -18,7 +18,7 @@ pipeline {
         steps {
 
           sh "mvn versions:set -DnewVersion=$PREVIEW_VERSION"
-          sh "mvn install"
+          sh "mvn install hpi:custom-war"
           sh 'export VERSION=$PREVIEW_VERSION && skaffold build -f skaffold.yaml'
 
           sh "jx step validate --min-jx-version 1.2.36"
@@ -52,7 +52,7 @@ pipeline {
               sh "make tag"
             }
 
-            sh 'mvn clean deploy'
+            sh 'mvn clean deploy hpi:custom-war'
 
             sh 'export VERSION=`cat VERSION` && skaffold build -f skaffold.yaml'
 
